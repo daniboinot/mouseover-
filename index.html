@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Interactive Canvas Shapes</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      canvas {
+        border: 1px solid #000;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let blueRectX = 100; // Initial X position of blue rectangle
+      let blueRectY = 100; // Initial Y position of blue rectangle
+
+      let orangeCircleX = 400; // Initial X position of orange circle
+      let orangeCircleY = 300; // Initial Y position of orange circle
+
+      // Function to draw blue rectangle at random position
+      function drawBlueRect() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+        blueRectX = Math.random() * (canvas.width - 200) + 100;
+        blueRectY = Math.random() * (canvas.height - 200) + 100;
+
+        ctx.fillStyle = "blue";
+        ctx.fillRect(blueRectX, blueRectY, 100, 50);
+      }
+
+      // Function to draw orange circle at random position
+      function drawOrangeCircle() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+        orangeCircleX = Math.random() * (canvas.width - 100) + 50;
+        orangeCircleY = Math.random() * (canvas.height - 100) + 50;
+
+        ctx.fillStyle = "orange";
+        ctx.beginPath();
+        ctx.arc(orangeCircleX, orangeCircleY, 50, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw red rectangle on the canvas
+      ctx.fillStyle = "red";
+      ctx.fillRect(100, 100, 300, 200);
+
+      // Draw green circle on the canvas
+      ctx.fillStyle = "green";
+      ctx.beginPath();
+      ctx.arc(500, 200, 100, 0, Math.PI * 2);
+      ctx.fill();
+
+      canvas.addEventListener("mousemove", function (event) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        // Check if the mouse is inside the red rectangle
+        if (mouseX >= 100 && mouseX <= 400 && mouseY >= 100 && mouseY <= 300) {
+          document.body.style.backgroundColor = "red";
+        } else if (
+          Math.sqrt((mouseX - 500) ** 2 + (mouseY - 200) ** 2) <= 100
+        ) {
+          document.body.style.backgroundColor = "green";
+        } else if (
+          mouseX >= blueRectX &&
+          mouseX <= blueRectX + 100 &&
+          mouseY >= blueRectY &&
+          mouseY <= blueRectY + 50
+        ) {
+          document.body.style.backgroundColor = "blue";
+          drawBlueRect(); // Move blue rectangle to a random position
+        } else if (
+          Math.sqrt(
+            (mouseX - orangeCircleX) ** 2 + (mouseY - orangeCircleY) ** 2
+          ) <= 50
+        ) {
+          document.body.style.backgroundColor = "orange";
+          drawOrangeCircle(); // Move orange circle to a random position
+        } else {
+          document.body.style.backgroundColor = "white";
+        }
+      });
+    </script>
+  </body>
+</html>
